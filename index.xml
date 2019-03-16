@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Feaggle on Feaggle</title>
-    <link>http://feaggle.github.io/</link>
+    <link>http://www.feaggle.org/</link>
     <description>Recent content in Feaggle on Feaggle</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
@@ -12,10 +12,10 @@
     
     <item>
       <title>Getting Started</title>
-      <link>http://feaggle.github.io/tutorial/getting-started/</link>
+      <link>http://www.feaggle.org/tutorial/getting-started/</link>
       <pubDate>Fri, 30 Nov 2018 00:00:00 +0000</pubDate>
       
-      <guid>http://feaggle.github.io/tutorial/getting-started/</guid>
+      <guid>http://www.feaggle.org/tutorial/getting-started/</guid>
       <description></description>
     </item>
     
