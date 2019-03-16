@@ -20,6 +20,14 @@
     
     <url>
     
+      <loc>http://feaggle.github.io/authors/</loc>
+      <priority>0</priority>
+    </url>
+    
+  
+    
+    <url>
+    
       <loc>http://feaggle.github.io/categories/</loc>
       <priority>0</priority>
     </url>

@@ -6,7 +6,7 @@
     <description>Recent content in Homes on Feaggle</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <copyright>&amp;copy; 2018</copyright>
+    <copyright>&amp;copy; 2019</copyright>
     <lastBuildDate>Sun, 15 Oct 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://feaggle.github.io/home/index.xml" rel="self" type="application/rss+xml" />
@@ -23,6 +23,15 @@
     
     <item>
       <title></title>
+      <link>http://feaggle.github.io/home/slider/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://feaggle.github.io/home/slider/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
       <link>http://feaggle.github.io/home/hero/</link>
       <pubDate>Sun, 15 Oct 2017 00:00:00 +0000</pubDate>
       
@@ -30,15 +39,6 @@
       <description>Feature Toggles as a service
 Star
  Quick Start  --  </description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://feaggle.github.io/home/about/</link>
-      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
-      
-      <guid>http://feaggle.github.io/home/about/</guid>
-      <description></description>
     </item>
     
     <item>
@@ -51,11 +51,23 @@ Star
     </item>
     
     <item>
-      <title>Recent Posts</title>
-      <link>http://feaggle.github.io/home/posts/</link>
-      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
+      <title>Academic Kickstart</title>
+      <link>http://feaggle.github.io/home/demo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://feaggle.github.io/home/posts/</guid>
+      <guid>http://feaggle.github.io/home/demo/</guid>
+      <description>Welcome to the Academic Kickstart template!
+Follow our Getting Started and Page Builder guides to easily personalize the template and then add your own content.
+For inspiration, check out the Markdown files which power the personal demo. The easiest way to publish your new site to the internet is with Netlify.
+ View the documentation Ask a question Request a feature or report a bug Updating? View the Update Guide and Release Notes Support development of Academic:  Donate a coffee Become a backer on Patreon Decorate your laptop or journal with an Academic sticker Wear the T-shirt    This homepage section is an example of adding elements to the Blank widget.</description>
+    </item>
+    
+    <item>
+      <title>Biography</title>
+      <link>http://feaggle.github.io/home/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://feaggle.github.io/home/about/</guid>
       <description></description>
     </item>
     
@@ -81,9 +93,36 @@ If you want to learn more about Faaggle, feel free to take a look at the Getting
     </item>
     
     <item>
-      <title>Tags</title>
+      <title>Recent Posts</title>
+      <link>http://feaggle.github.io/home/posts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://feaggle.github.io/home/posts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>http://feaggle.github.io/home/projects/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://feaggle.github.io/home/projects/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Featured Publications</title>
+      <link>http://feaggle.github.io/home/featured/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://feaggle.github.io/home/featured/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Popular Topics</title>
       <link>http://feaggle.github.io/home/tags/</link>
-      <pubDate>Wed, 20 Sep 2017 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://feaggle.github.io/home/tags/</guid>
       <description></description>
@@ -92,7 +131,7 @@ If you want to learn more about Faaggle, feel free to take a look at the Getting
     <item>
       <title>Contact</title>
       <link>http://feaggle.github.io/home/contact/</link>
-      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://feaggle.github.io/home/contact/</guid>
       <description></description>
