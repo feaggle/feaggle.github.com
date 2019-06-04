@@ -47,7 +47,7 @@ Star
       <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
       
       <guid>http://feaggle.github.io/home/try-it/</guid>
-      <description>Feaggle is just a library, lightweight, and simple.
+      <description>Feaggle is just a library: lightweight, and simple.
 var feaggle = Feaggle.load( BasicDriverLoader.builder() .releases(BasicReleaseDriver.builder() .release(&amp;quot;my-release!&amp;quot;, true) .build() ) ); feaggle.release(&amp;quot;my-release!&amp;quot;).isEnabled();  If you want to learn more about feaggle, feel free to take a look at the Getting Started guide.</description>
     </item>
     
