@@ -20,7 +20,7 @@
       <guid>http://feaggle.github.io/tutorial/getting-started/</guid>
       <description>feaggle is a library that simplifies a process: continuous delivery. The main idea of feaggle is to wrap new features that are under development, so they can be enabled or disabled to a subset of your customers. This allows teams to get quality feedback faster and easens the burden of managing feature toggles.
 We designed feaggle with simplicity and security in mind, that&amp;rsquo;s why:
- Toggle configuration is done just once, and decoupled to the usage of the toggle.</description>
+ Toggle configuration is done just once, and decoupled from the usage of the toggle.</description>
     </item>
     
   </channel>

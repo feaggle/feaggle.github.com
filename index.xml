@@ -101,7 +101,7 @@ enabled or disabled to a subset of your customers. This allows teams to get qual
 &lt;p&gt;We designed feaggle with simplicity and security in mind, that&amp;rsquo;s why:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Toggle configuration is done just once, and decoupled to the usage of the toggle.&lt;/li&gt;
+&lt;li&gt;Toggle configuration is done just once, and decoupled from the usage of the toggle.&lt;/li&gt;
 &lt;li&gt;We promote a centralised configuration, outside production code. Changing the status of a toggle doesn&amp;rsquo;t mean changing where we are using the toggle.&lt;/li&gt;
 &lt;li&gt;We believe that releasing features can be done without deploying new code, just changing a toggle. That&amp;rsquo;s why we support hot reloading in our
 &lt;a href=&#34;https://github.com/feaggle/feaggle-jdbc&#34; target=&#34;_blank&#34;&gt;jdbc module&lt;/a&gt;.&lt;/li&gt;
@@ -110,7 +110,7 @@ enabled or disabled to a subset of your customers. This allows teams to get qual
 
 &lt;h2 id=&#34;installing-feaggle&#34;&gt;Installing feaggle&lt;/h2&gt;
 
-&lt;p&gt;feaggle is published regularly in jcenter, so it can be retrieved using gradle easily:&lt;/p&gt;
+&lt;p&gt;feaggle is published regularly in jcenter, so it can be retrieved using gradle:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;repositories {
   // ...
@@ -184,10 +184,232 @@ public Object getMyBillingReports(User user) {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;It would be even harder if we want to make a healthcheck to the new reports service to make it work. However, to reduce complexity, we can keep it like that.&lt;/p&gt;
+
+&lt;p&gt;At the end, when the new reporting service is ready and has all the features from all types of users, we can start rolling out to all customers:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Get(&amp;quot;/report&amp;quot;)
+public Object getMyBillingReports(User user) {
+  if (isNewReportFeatureEnabled &amp;amp;&amp;amp; Math.random() &amp;lt; 0.5f) { // not evenly distributed, but aprox 50% of load.
+    return newReports.getReport(user);
+  } else {
+    return reports.getReportForUser(user.getId());
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And finally, we can release to everyone:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Get(&amp;quot;/report&amp;quot;)
+public Object getMyBillingReports(User user) {
+  return newReports.getReport(user); // we might want in some situations to keep the toggle to disable it in case of a failure
+}
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;h2 id=&#34;configuring-feaggle&#34;&gt;Configuring feaggle&lt;/h2&gt;
 
 &lt;p&gt;Configuring feaggle depends on which module are you using. In this getting started guide, we are going to assume that you want to use only the core features
-of feaggle. If you want to store your toggles in a SQL database&lt;/p&gt;
+of feaggle. If you want to store your toggles in a SQL database you might want to take a look at &lt;a href=&#34;https://github.com/feaggle/feaggle-jdbc&#34; target=&#34;_blank&#34;&gt;feaggle-jdbc&lt;/a&gt;. However,
+we recommend you to do the complete &lt;code&gt;Getting Started&lt;/code&gt; guide and then move to the jdbc module.&lt;/p&gt;
+
+&lt;p&gt;To configure feaggle, we need what is called a &lt;code&gt;DriverLoader&lt;/code&gt;. A &lt;code&gt;DriverLoader&lt;/code&gt; allows feaggle to build the necessary infrastructure to keep track of any kind of toggle.
+In feaggle, there are three types of toggles:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;ReleaseToggle&lt;/strong&gt; allows you to enable or disable a feature completely.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;ExperimentToggle&lt;/strong&gt; allows you to enable or disable a feature for a subset of the users. They require a &lt;em&gt;ExperimentCohort&lt;/em&gt; which represents
+the properties of a subset of useres.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;OperationalToggle&lt;/strong&gt; allows you to enable or disable a feature depending on the status of the application. For example, you might want to disable a feature if your
+application is getting out of disk (or gracefully degrade to another service), if an external endpoint is down, or the cpu usage is dangerous.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To create a DriverLoader, you will need to use the &lt;code&gt;BasicDriverLoader&lt;/code&gt; class, which exposes a builder to simplify the creation of any kind of toggle.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;BasicDriverLoader.builder()
+    .releases(...)
+    .experiments(...)
+    .operationals(...)
+    .build()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;A BasicDriverLoader up to three drivers, one for each type of toggle. If you want to use only releases, you can just skip calling the &lt;code&gt;.experiments&lt;/code&gt; and
+&lt;code&gt;.operational&lt;/code&gt; methods.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s start with releases.&lt;/p&gt;
+
+&lt;h3 id=&#34;releases&#34;&gt;Releases&lt;/h3&gt;
+
+&lt;p&gt;Releases need a ReleaseDriver, that will configure toggles to use the appropiate information. Conveniently, feaggle comes with
+a &lt;code&gt;BasicReleaseDriver&lt;/code&gt; that allows to set up, in memory, all our releases, so they can be used later.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;BasicReleaseDriver.builder()
+              .release(ENABLED_RELEASE, true)
+              .release(DISABLED_RELEASE, false)
+              .build()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For example, the configuration would look like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;var releases = BasicReleaseDriver.builder()
+  .release(ENABLED_RELEASE, true)
+  .release(DISABLED_RELEASE, false)
+  .build();
+
+BasicDriverLoader.builder()
+    .releases(releases)
+    .build()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;experiments&#34;&gt;Experiments&lt;/h3&gt;
+
+&lt;p&gt;Experiments are a bit more complicated, because they need a cohort. A Cohort is just a subset of the users, defined by common properties. First, you will need to define
+your Cohort (a class with all common properties to all users, where you will create segments) implementing the ExperimentCohort interface. For example, for our
+reporting application, we would like to segment by paid users and by the country.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class Cohort implements ExperimentCohort {
+  public final String userId;
+  public final String countryCode;
+  public final boolean isPremium;
+
+  ...
+
+  @Override
+  public String identifier() {
+    return userId;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;With the Cohort, we can start defining experiments with the BasicExperimentDriver:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;BasicExperimentDriver.&amp;lt;Cohort&amp;gt;builder()
+    .experiment(
+        Experiment.&amp;lt;Cohort&amp;gt;builder()
+            .toggle(&amp;quot;my-experiment&amp;quot;) 
+            .segment(cohort -&amp;gt; cohort.countryCode == &amp;quot;P&amp;quot;) // this experiment is only enabled for users in Portugal
+            .enabled(true)
+            .build()
+    )
+    .experiment(
+        Experiment.&amp;lt;Cohort&amp;gt;builder()
+            .toggle(&amp;quot;my-experiment-2&amp;quot;) 
+            .segment(cohort -&amp;gt; cohort.isPremium) // this experiment is enabled for premium users
+            .segment(Rollout.&amp;lt;Cohort&amp;gt;builder().percentage(25).build()) // but only a random 25% percent of them
+            .enabled(true)
+            .build()
+    )
+    .build()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At the end, your configuration would look like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;var experiments = BasicExperimentDriver.&amp;lt;Cohort&amp;gt;builder()
+    .experiment(
+        Experiment.&amp;lt;Cohort&amp;gt;builder()
+            .toggle(&amp;quot;my-experiment&amp;quot;) 
+            .segment(cohort -&amp;gt; cohort.countryCode == &amp;quot;P&amp;quot;) // this experiment is only enabled for users in Portugal
+            .enabled(true)
+            .build()
+    )
+    .experiment(
+        Experiment.&amp;lt;Cohort&amp;gt;builder()
+            .toggle(&amp;quot;my-experiment-2&amp;quot;) 
+            .segment(cohort -&amp;gt; cohort.isPremium) // this experiment is enabled for premium users
+            .segment(Rollout.&amp;lt;Cohort&amp;gt;builder().percentage(25).build()) // but only a random 25% percent of them
+            .enabled(true)
+            .build()
+    )
+    .build()
+
+BasicDriverLoader.builder()
+    .experiments(experiments)
+    .build()
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;operational-toggles&#34;&gt;Operational Toggles&lt;/h3&gt;
+
+&lt;p&gt;Operational toggles allows you to enable a feature based on the system state. Those kind of toggles are based on rules and sensors, that will gather information
+of the system. For example, if you want to only enable a feature if the peer service is on, you would do:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;OperationalDriver.builder()
+    .rule(
+        Rule.builder()
+            .toggle(TOGGLE_NAME)
+            .enabled(true)
+            .sensor(Healthcheck.builder()
+                    .check(this::reportingServiceAvailability) // method that checks the remote server is available
+                    .interval(1000) // interval in milliseconds between calls
+                    .healthyCount(3) // nr of times the healthcheck should be working for being considered healthy
+                    .unhealthyCount(2) // nr of times the healthcheck should fail for being considered unhealthy
+                    .build())
+            .build()
+    ).build()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are several sensors already bundled with feaggle. Some code examples:&lt;/p&gt;
+
+&lt;h4 id=&#34;disk-usage&#34;&gt;Disk Usage&lt;/h4&gt;
+
+&lt;p&gt;Only enable the feature if the current disk partition has less than 20TB.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Rule.builder()
+  .toggle(TOGGLE_NAME)
+  .sensor(Disk.builder().fileStore(Disk.fileStoreOf(Paths.get(&amp;quot;.&amp;quot;))).predicate(Disk.spaceAvailableIsLessThan(20, Unit.TB)).build())
+  .enabled(true)
+  .build()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;memory&#34;&gt;Memory&lt;/h4&gt;
+
+&lt;p&gt;Only enable the feature if the memory usage is more than 1% of the available memory.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Rule.builder()
+  .toggle(TOGGLE_NAME)
+  .sensor(Memory.builder().predicate(Memory.usageIsGreaterThan(1)).build())
+  .enabled(true)
+  .build()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;cpu&#34;&gt;CPU&lt;/h4&gt;
+
+&lt;p&gt;Only enable the feature if the CPU usage is greater than 1% of the CPU.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Rule.builder()
+  .toggle(TOGGLE_NAME)
+  .sensor(Cpu.builder().predicate(Cpu.usageIsGreaterThan(1)).build())
+  .enabled(true)
+  .build()
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;building-a-feaggle-instance&#34;&gt;Building a feaggle instance&lt;/h2&gt;
+
+&lt;p&gt;Feaggle has a facade that will set up all the drivers and toggles. This way, for validating that a toggle is enabled, you only need to use a single object
+that is consistent.&lt;/p&gt;
+
+&lt;p&gt;To create a Feaggle instance we need to call the &lt;code&gt;.load&lt;/code&gt; static method with the created DriverLoader:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;var driverLoader = BasicDriverLoader.builder()
+    .releases(...)
+    .experiments(...)
+    .operationals(...)
+    .build();
+
+Feaggle&amp;lt;Cohort&amp;gt; feaggle = Feaggle.load(driverLoader);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For checking the status of the toggles there are three methods, one per toggle type. The API is quite simple, so probably is clear with a code example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;// release toggles
+feaggle.release(&amp;quot;my-new-cool-release&amp;quot;).isEnabled();
+
+// experiment toggles
+var cohort = new Cohort(&amp;quot;user-id&amp;quot;, &amp;quot;P&amp;quot;, true);
+feaggle.experiment(&amp;quot;my-experiment&amp;quot;).isEnabledFor(cohort);
+
+// operational toggles
+feaggle.operational(&amp;quot;my-operational-toggle&amp;quot;).isEnabled();
+&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     
