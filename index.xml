@@ -410,6 +410,14 @@ feaggle.experiment(&amp;quot;my-experiment&amp;quot;).isEnabledFor(cohort);
 // operational toggles
 feaggle.operational(&amp;quot;my-operational-toggle&amp;quot;).isEnabled();
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For more advanced information and configuration, please check:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/feaggle/feaggle/tree/master/src/test/java/io/feaggle/specs&#34; target=&#34;_blank&#34;&gt;The test suite in feaggle&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/feaggle/feaggle-jdbc/tree/master/src/test/java/io/feaggle/jdbc&#34; target=&#34;_blank&#34;&gt;The test suite in feaggle-jdbc&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://feaggle.github.io/tutorial/&#34;&gt;Other tutorials&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
