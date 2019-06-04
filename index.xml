@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Feaggle on Feaggle</title>
@@ -7,8 +6,86 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2019</copyright>
-    <lastBuildDate>Sun, 15 Oct 2017 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 06 Mar 2019 00:00:00 +0000</lastBuildDate>
     <atom:link href="/" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Welcome, Epics!</title>
+      <link>http://feaggle.github.io/blog/welcome-epics/</link>
+      <pubDate>Wed, 06 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://feaggle.github.io/blog/welcome-epics/</guid>
+      <description>&lt;p&gt;We&amp;rsquo;ve been working for some time doing Continuous Delivery in our teams, and we found that managing feature toggles in our code
+was a challenge. Not only because toggles are complex to implement properly and each of us implemented their toggles in different ways,
+but also because toggles evolved rapidly when we were releasing new features.&lt;/p&gt;
+
+&lt;p&gt;A good example of the evolution of a toggle would be to, first, enable our new shiny feature for a subset of users. When the feature has been probed with
+a subset of the customers, we can enable it for a bigger set of customers (probably multiple countries). However, we want to make sure that the new feature
+doesn&amp;rsquo;t break the system that is already in production, so we would want to disable it in case the new service that we depend on is down. After testing the
+new feature under a big load, we might want to progressively enable it to all customers, but with the ability to disable it quickly to all of our customers
+if we find something problematic (like a security bug). At the end, we want to just enable the feature for all customers and clean up the feature toggle.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://feaggle.github.io/img/blog/welcome-epics/feature-flow.png&#34; alt=&#34;Live of a feature&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;However, managing this flow manually is really complex, is error prone and messes up with the code. For example, we would have with something like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;var myRelease = feaggle.release(&amp;quot;MY_RELEASE&amp;quot;);
+var myExperiment = feaggle.experiment(&amp;quot;MY_RELEASE&amp;quot;);
+
+if (myRelease.isEnabled() &amp;amp;&amp;amp; myExperiment.isEnabledFor(myCurrentUser)) {
+  newShinyFeature();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;That later would evolve to:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;var myRelease = feaggle.release(&amp;quot;MY_RELEASE&amp;quot;);
+var myExperiment = feaggle.experiment(&amp;quot;MY_EXPERIMENT&amp;quot;);
+var reportsService = feaggle.operational(&amp;quot;REPORTS_SERVICE_IS_UP&amp;quot;);
+
+if (myRelease.isEnabled() &amp;amp;&amp;amp; myExperiment.isEnabledFor(myCurrentUser) &amp;amp;&amp;amp; reportsService.isEnabled()) {
+  newShinyFeature();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We found that every change to our rollout strategy would mean that we changed the code that was in production, meaning that we could break it (&lt;em&gt;spoiler&lt;/em&gt;, we broke it).&lt;/p&gt;
+
+&lt;p&gt;We though that having some kind of abstraction over a feature, that could evolve during the lifetime of the feature, was necessary. That&amp;rsquo;s why we came up with the
+concept of &lt;em&gt;drum-roll&lt;/em&gt; &lt;strong&gt;Epic&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;So, what is an epic itself? An epic aggregates a set of toggles (of different types) and is enabled only if &lt;strong&gt;all&lt;/strong&gt; toggles inside the epic are enabled for a cohort.
+Building an epic is quite easy:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Epic&amp;lt;MyCohort&amp;gt; epic = feaggle.epic()
+  .release(feaggle.release(&amp;quot;MY_RELEASE&amp;quot;)) // you can add more than one release toggle, just calling .release again
+  .experiment(feaggle.experiment(&amp;quot;MY_EXPERIMENT&amp;quot;)) // also, you can add more than one experiment with .experiment
+  .operational(feaggle.operational(&amp;quot;REPORTS_SERVICE_IS_UP&amp;quot;)) // also here :D
+  .build();
+
+// usage:
+
+if (epic.isEnabledFor(myCurrentUser)) {
+  newShinyFeature();
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There are several awesome features from &lt;em&gt;epics&lt;/em&gt; that will let you fall in love with them:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Epics are lazy. They will evaluate toggles by complexity until finds one that is disabled. For example, if a release is turned off,
+the epic won&amp;rsquo;t call any experiment or operational toggle.&lt;/li&gt;
+&lt;li&gt;Epics are configured once and can be injected, if you want to change how they work, just reconfigure them.&lt;/li&gt;
+&lt;li&gt;Epics are unaware of how other toggles work. You can use epics with toggles that are stored in your database with
+&lt;a href=&#34;https://github.com/feaggle/feaggle-jdbc&#34; target=&#34;_blank&#34;&gt;feaggle-jdbc&lt;/a&gt; or toggles in memory. Your epic won&amp;rsquo;t change.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We believe that epics will be a game changer on how we do Continuous Deliver, as we have more power on how we release our features
+without sacrificing ease. You can start using epics in feaggle 2.0.0: despite the major version, it&amp;rsquo;s backwards compatible to feaggle 1.x
+and feaggle-jdbc!&lt;/p&gt;
+
+&lt;p&gt;Read more information on how to use feaggle in the &lt;a href=&#34;https://github.com/feaggle/feaggle&#34; target=&#34;_blank&#34;&gt;the feaggle repository&lt;/a&gt; and remember that if you have any feedback or suggestion,please fill us an issue so we can keep track of them 😍.&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Getting Started</title>

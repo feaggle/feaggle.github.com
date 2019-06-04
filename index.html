@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="generator" content="Source Themes Academic 4.1.0">
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.55.6" />
 
   
 
@@ -25,7 +25,7 @@
   
     
   
-  <meta name="description" content="Feature toggles as a service">
+  <meta name="description" content="feature toggles made easy.">
 
   
   <link rel="alternate" hreflang="en-us" href="http://feaggle.github.io/">
@@ -48,7 +48,7 @@
   
   
   
-  <meta name="theme-color" content="#2962ff">
+  <meta name="theme-color" content="#795548">
   
 
   
@@ -81,7 +81,7 @@
 
   
   
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Playfair+Display:400,700|Fauna+One">
   
 
   <link rel="stylesheet" href="/styles.css">
@@ -127,10 +127,10 @@
   <meta property="og:site_name" content="Feaggle">
   <meta property="og:url" content="http://feaggle.github.io/">
   <meta property="og:title" content="Feaggle">
-  <meta property="og:description" content="Feature toggles as a service"><meta property="og:image" content="http://feaggle.github.io/img/logo.png">
+  <meta property="og:description" content="feature toggles made easy."><meta property="og:image" content="http://feaggle.github.io/img/logo.png">
   <meta property="og:locale" content="en-us">
   
-  <meta property="og:updated_time" content="2017-10-15T00:00:00&#43;00:00">
+  <meta property="og:updated_time" content="2019-03-06T00:00:00&#43;00:00">
   
 
   
@@ -142,12 +142,12 @@
     window.cookieconsent.initialise({
       "palette": {
         "popup": {
-          "background": "#2962ff",
-          "text": "#fff"
+          "background": "#795548",
+          "text": "hsla(16, 24%, 85%, 1)"
         },
         "button": {
-          "background": "#fff",
-          "text": "#2962ff"
+          "background": "hsla(16, 24%, 85%, 1)",
+          "text": "#795548"
         }
       },
       "theme": "classic",
@@ -247,6 +247,25 @@
         
 
         <li class="nav-item">
+          <a class="nav-link" href="/blog/" data-target="/blog/">
+            
+            <span>Blog</span>
+            
+          </a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        <li class="nav-item">
           <a class="nav-link" href="/tutorial/" data-target="/tutorial/">
             
             <span>Tutorial</span>
@@ -268,7 +287,7 @@
         
 
         <li class="nav-item">
-          <a class="nav-link" href="https://github.com/feaggle" data-target="https://github.com/feaggle" target="_blank" rel="noopener">
+          <a class="nav-link" href="https://github.com/feaggle/feaggle" data-target="https://github.com/feaggle/feaggle" target="_blank" rel="noopener">
             
             <span><i class='fab fa-github'></i></span>
             
@@ -344,15 +363,14 @@
     </h1>
 
     
-    <div class="hero-lead"><p>Feature Toggles as a service</p>
+    <div class="hero-lead"><p>feature toggles made easy.</p>
 
-<p><a class="github-button" href="https://github.com/feaggle/feaggle-server" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star this on GitHub">Star</a></p>
+<p><a class="github-button" href="https://github.com/feaggle/feaggle" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star this on GitHub">Star</a></p>
 
-<!-- <a href="./tutorial/getting-started/" class="btn btn-outline-light btn-lg">
-  <i class="fas fa-book"></i> Quick Start
-</a> -->
-
-<script async defer src="https://buttons.github.io/buttons.js"></script>
+<p><a href="./tutorial/getting-started/" class="btn btn-outline-dark btn-lg" style="text-decoration: none">
+  <b class="fas fa-book"></b><b> Quick Start</b>
+</a>
+<script async defer src="https://buttons.github.io/buttons.js"></script></p>
 </div>
     
 
@@ -410,9 +428,9 @@
     
   
   <div class="col-12 col-sm-4">
-    <div class="featurette-icon"><i class="fas fa-ring"></i></div>
+    <div class="featurette-icon"><i class="fas fa-smile-wink"></i></div>
     <h3>Painless</h3>
-    
+    <p>With a basic configuration you can start rolling out your features without fear of breaking production code.</p>
   </div>
   
   
@@ -423,7 +441,7 @@
   <div class="col-12 col-sm-4">
     <div class="featurette-icon"><i class="fas fa-space-shuttle"></i></div>
     <h3>Fast</h3>
-    
+    <p>No reflection. No magic classes. Just basic Java that can be used easily on Kotlin or Scala.</p>
   </div>
   
   
@@ -433,8 +451,8 @@
   
   <div class="col-12 col-sm-4">
     <div class="featurette-icon"><i class="fas fa-layer-group"></i></div>
-    <h3>scalable</h3>
-    
+    <h3>Scalable</h3>
+    <p>Start with a configuration that is your code, and move to the database easily, without big changes.</p>
   </div>
   
 </div>
@@ -461,64 +479,35 @@
   
   
   
-  <section id="contact" class="home-section wg-contact   " >
+  <section id="try-it" class="home-section wg-blank   " >
     <div class="container">
       
 
 
+<div class="row">
+  
+    <div class="col-12 col-lg-4 section-heading">
+      <h1>Example</h1>
+      
+    </div>
+    <div class="col-12 col-lg-8">
+      <p>Feaggle is just a library, lightweight, and simple.</p>
 
+<pre><code class="language-java">var feaggle = Feaggle.load(
+    BasicDriverLoader.builder()
+            .releases(BasicReleaseDriver.builder()
+                     .release(&quot;my-release!&quot;, true)
+                     .build()
+    )
+);
 
-<div class="row contact-widget">
-  <div class="col-12 col-lg-4 section-heading">
-    <h1>Contact</h1>
-    
-  </div>
-  <div class="col-12 col-lg-8">
-    
+feaggle.release(&quot;my-release!&quot;).isEnabled();
+</code></pre>
 
-    
+<p>If you want to learn more about feaggle, feel free to take a look at the <a href="./tutorial/getting-started/">Getting Started</a> guide.</p>
 
-    <ul class="fa-ul" itemscope>
-
-      
-      <li>
-        <i class="fa-li fas fa-envelope fa-2x" aria-hidden="true"></i>
-        <span id="person-email" itemprop="email"><a href="mailto:contact@feaggle.org">contact@feaggle.org</a></span>
-      </li>
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-      
-      
-      
-      
-        
-      
-      
-      
-      
-      
-        
-      
-      <li>
-        <i class="fa-li fas fa-comments fa-2x" aria-hidden="true"></i>
-        <a href="https://discourse.gohugo.io" target="_blank" rel="noopener">Discuss on Forum</a>
-      </li>
-      
-
-    </ul>
-
-    
-
-  </div>
+    </div>
+  
 </div>
 
     </div>
@@ -596,15 +585,7 @@
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
         
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/js.min.js"></script>
-        
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/script.min.js"></script>
-        
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/html.min.js"></script>
-        
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/json.min.js"></script>
-        
-        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/java.min.js"></script>
         
       
 
