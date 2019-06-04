@@ -81,7 +81,7 @@
 
   
   
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Playfair+Display:400,700|Fauna+One">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:400,400italic,700|Roboto+Mono">
   
 
   <link rel="stylesheet" href="/styles.css">
@@ -106,8 +106,8 @@
   
 
   
-  <link rel="alternate" href="http://feaggle.github.io/index.xml" type="application/rss+xml" title="Feaggle">
-  <link rel="feed" href="http://feaggle.github.io/index.xml" type="application/rss+xml" title="Feaggle">
+  <link rel="alternate" href="http://feaggle.github.io/index.xml" type="application/rss+xml" title="feaggle">
+  <link rel="feed" href="http://feaggle.github.io/index.xml" type="application/rss+xml" title="feaggle">
   
 
   <link rel="manifest" href="/site.webmanifest">
@@ -124,9 +124,9 @@
   
   <meta property="twitter:card" content="summary_large_image">
   
-  <meta property="og:site_name" content="Feaggle">
+  <meta property="og:site_name" content="feaggle">
   <meta property="og:url" content="http://feaggle.github.io/">
-  <meta property="og:title" content="Feaggle">
+  <meta property="og:title" content="feaggle">
   <meta property="og:description" content="feature toggles made easy."><meta property="og:image" content="http://feaggle.github.io/img/logo.png">
   <meta property="og:locale" content="en-us">
   
@@ -163,7 +163,7 @@
 
   
 
-  <title>Feaggle</title>
+  <title>feaggle</title>
 
 </head>
 <body id="top" data-spy="scroll" data-target="#navbar-main" data-offset="71" >
@@ -203,7 +203,7 @@
   <div class="container">
 
     
-      <a class="navbar-brand" href="/"><img src="/img/logo_name.png" alt="Feaggle"></a>
+      <a class="navbar-brand" href="/"><img src="/img/logo_name.png" alt="feaggle"></a>
       
       <button type="button" class="navbar-toggler" data-toggle="collapse"
               data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -452,7 +452,7 @@
   <div class="col-12 col-sm-4">
     <div class="featurette-icon"><i class="fas fa-layer-group"></i></div>
     <h3>Scalable</h3>
-    <p>Start with a configuration that is your code, and move to the database easily, without big changes.</p>
+    <p>Start with a configuration as code, and move to the database easily.</p>
   </div>
   
 </div>
@@ -487,7 +487,7 @@
 <div class="row">
   
     <div class="col-12 col-lg-4 section-heading">
-      <h1>Example</h1>
+      <h1>Ready!</h1>
       
     </div>
     <div class="col-12 col-lg-8">
@@ -505,6 +505,57 @@ feaggle.release(&quot;my-release!&quot;).isEnabled();
 </code></pre>
 
 <p>If you want to learn more about feaggle, feel free to take a look at the <a href="./tutorial/getting-started/">Getting Started</a> guide.</p>
+
+    </div>
+  
+</div>
+
+    </div>
+  </section>
+  
+
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  
+  
+  
+  <section id="grows-with-you" class="home-section wg-blank   " >
+    <div class="container">
+      
+
+
+<div class="row">
+  
+    <div class="col-12 col-lg-4 section-heading">
+      <h1>Evolves with you</h1>
+      
+    </div>
+    <div class="col-12 col-lg-8">
+      <p><a href="https://github.com/feaggle/feaggle-jdbc" target="_blank">feaggle-jdbc</a> allows you to have toggles that can be hot-reloaded, just by changing the configuration.</p>
+
+<pre><code class="language-java">Feaggle feaggle = Feaggle.load(
+    JdbcDriver.from(yourJdbcConnection)
+        .defaults()
+        .build()
+);
+
+feaggle.release(&quot;my-release!&quot;).isEnabled();
+</code></pre>
+
+<p>If you want to learn more about feaggle-jdbc, feel free to take a look at the <a href="https://github.com/feaggle/feaggle-jdbc" target="_blank">project documentation</a>.</p>
 
     </div>
   
@@ -586,6 +637,8 @@ feaggle.release(&quot;my-release!&quot;).isEnabled();
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
         
         <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/java.min.js"></script>
+        
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/groovy.min.js"></script>
         
       
 

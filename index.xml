@@ -1,8 +1,8 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Feaggle on Feaggle</title>
+    <title>feaggle on feaggle</title>
     <link>http://feaggle.github.io/</link>
-    <description>Recent content in Feaggle on Feaggle</description>
+    <description>Recent content in feaggle on feaggle</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2019</copyright>
@@ -93,7 +93,102 @@ and feaggle-jdbc!&lt;/p&gt;
       <pubDate>Fri, 30 Nov 2018 00:00:00 +0000</pubDate>
       
       <guid>http://feaggle.github.io/tutorial/getting-started/</guid>
-      <description></description>
+      <description>
+
+&lt;p&gt;feaggle is a library that simplifies a process: continuous delivery. The main idea of feaggle is to wrap new features that are under development, so they can be
+enabled or disabled to a subset of your customers. This allows teams to get quality feedback faster and easens the burden of managing feature toggles.&lt;/p&gt;
+
+&lt;p&gt;We designed feaggle with simplicity and security in mind, that&amp;rsquo;s why:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Toggle configuration is done just once, and decoupled to the usage of the toggle.&lt;/li&gt;
+&lt;li&gt;We promote a centralised configuration, outside production code. Changing the status of a toggle doesn&amp;rsquo;t mean changing where we are using the toggle.&lt;/li&gt;
+&lt;li&gt;We believe that releasing features can be done without deploying new code, just changing a toggle. That&amp;rsquo;s why we support hot reloading in our
+&lt;a href=&#34;https://github.com/feaggle/feaggle-jdbc&#34; target=&#34;_blank&#34;&gt;jdbc module&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Just plain Java, no annotations, no reflection. Can be used in any JVM language, compiles with Java 8, and runs in the GraalVM.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;installing-feaggle&#34;&gt;Installing feaggle&lt;/h2&gt;
+
+&lt;p&gt;feaggle is published regularly in jcenter, so it can be retrieved using gradle easily:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-groovy&#34;&gt;repositories {
+  // ...
+  jcenter()
+  // ...
+}
+
+depedencies {
+  compile &#39;io.feaggle:feaggle:2.0.0&#39;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Right now the latest version is:
+&lt;a href=&#34;https://bintray.com/kmruiz/feaggle/feaggle/_latestVersion&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;https://api.bintray.com/packages/kmruiz/feaggle/feaggle/images/download.svg&#34; alt=&#34;Download&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;how-to-use-feature-toggles&#34;&gt;How to use feature toggles&lt;/h2&gt;
+
+&lt;p&gt;If you already have experience with feature toggles and you want to start right with the code, please go to the &lt;a href=&#34;#configuring-feaggle&#34;&gt;configuring feaggle&lt;/a&gt; section. If
+you want to refresh some knowledge or you are just starting from scratch on using feature toggles, welcome! We will go through the process of using toggles in our
+production code and how to release incrementally a feature. We will be also exploring different types of toggles so we know which one to use in which circumstances.&lt;/p&gt;
+
+&lt;p&gt;Usually you want to release new features incrementally because allows you to:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Verify that the feature works for a subset of your customers.&lt;/li&gt;
+&lt;li&gt;Verify that the feature brings business value without implementing the whole epic.&lt;/li&gt;
+&lt;li&gt;Avoid integration issues with other components, as the code is pushed as soon as possible to production.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let&amp;rsquo;s say that we want to implement a new version of a feature: a new reporting integration that will allow us to get more information about the billing on our platform.
+Right now our code looks like:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Get(&amp;quot;/report&amp;quot;)
+public Object getMyBillingReports(User user) {
+  return reports.getReportForUser(user.getId());
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Sadly, the new reporting service is still under development and lacks some important features. After some investigation we&amp;rsquo;ve found that probably we can release
+the integration that we have for just a subset of our users: all users that are not premium. It looks like those features are only used for premium users, so we can
+release earlier!&lt;/p&gt;
+
+&lt;p&gt;We might want to do something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Get(&amp;quot;/report&amp;quot;)
+public Object getMyBillingReports(User user) {
+  if (user.isNotPremium()) {
+    return newReports.getReport(user);
+  } else {
+    return reports.getReportForUser(user.getId());
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;However we&amp;rsquo;ve found that the new service is not handling all the load and we overloaded it. It&amp;rsquo;s reasonable to do two things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Find a way to easy disable the toggle for everyone if we have problems with the new reporting service.&lt;/li&gt;
+&lt;li&gt;Rollout the feature to a subset of the non-premium users and be able to increase the number of users with access.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The easiest option right now would be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Get(&amp;quot;/report&amp;quot;)
+public Object getMyBillingReports(User user) {
+  if (isNewReportFeatureEnabled &amp;amp;&amp;amp; user.isNotPremium() &amp;amp;&amp;amp; Math.random() &amp;lt; 0.2f) { // not evenly distributed, but aprox 20% of load.
+    return newReports.getReport(user);
+  } else {
+    return reports.getReportForUser(user.getId());
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;configuring-feaggle&#34;&gt;Configuring feaggle&lt;/h2&gt;
+
+&lt;p&gt;Configuring feaggle depends on which module are you using. In this getting started guide, we are going to assume that you want to use only the core features
+of feaggle. If you want to store your toggles in a SQL database&lt;/p&gt;
+</description>
     </item>
     
   </channel>

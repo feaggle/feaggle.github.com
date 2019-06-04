@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Homes on Feaggle</title>
+    <title>Homes on feaggle</title>
     <link>http://feaggle.github.io/home/</link>
-    <description>Recent content in Homes on Feaggle</description>
+    <description>Recent content in Homes on feaggle</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>&amp;copy; 2019</copyright>
@@ -42,13 +42,23 @@ Star
     </item>
     
     <item>
-      <title>Example</title>
+      <title>Ready!</title>
       <link>http://feaggle.github.io/home/try-it/</link>
       <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
       
       <guid>http://feaggle.github.io/home/try-it/</guid>
       <description>Feaggle is just a library: lightweight, and simple.
 var feaggle = Feaggle.load( BasicDriverLoader.builder() .releases(BasicReleaseDriver.builder() .release(&amp;quot;my-release!&amp;quot;, true) .build() ) ); feaggle.release(&amp;quot;my-release!&amp;quot;).isEnabled();  If you want to learn more about feaggle, feel free to take a look at the Getting Started guide.</description>
+    </item>
+    
+    <item>
+      <title>Evolves with you</title>
+      <link>http://feaggle.github.io/home/grows-with-you/</link>
+      <pubDate>Wed, 20 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>http://feaggle.github.io/home/grows-with-you/</guid>
+      <description>feaggle-jdbc allows you to have toggles that can be hot-reloaded, just by changing the configuration.
+Feaggle feaggle = Feaggle.load( JdbcDriver.from(yourJdbcConnection) .defaults() .build() ); feaggle.release(&amp;quot;my-release!&amp;quot;).isEnabled();  If you want to learn more about feaggle-jdbc, feel free to take a look at the project documentation.</description>
     </item>
     
   </channel>
