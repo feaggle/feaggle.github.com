@@ -83,7 +83,10 @@ the epic won&amp;rsquo;t call any experiment or operational toggle.&lt;/li&gt;
 without sacrificing ease. You can start using epics in feaggle 2.0.0: despite the major version, it&amp;rsquo;s backwards compatible to feaggle 1.x
 and feaggle-jdbc!&lt;/p&gt;
 
-&lt;p&gt;Read more information on how to use feaggle in the &lt;a href=&#34;https://github.com/feaggle/feaggle&#34; target=&#34;_blank&#34;&gt;the feaggle repository&lt;/a&gt; and remember that if you have any feedback or suggestion,please fill us an issue so we can keep track of them 😍.&lt;/p&gt;
+&lt;p&gt;Read more information on how to use feaggle in the &lt;a href=&#34;https://github.com/feaggle/feaggle&#34; target=&#34;_blank&#34;&gt;the feaggle repository&lt;/a&gt;. You can also check the
+&lt;a href=&#34;https://www.feaggle.org/tutorial/getting-started/&#34; target=&#34;_blank&#34;&gt;Getting Started&lt;/a&gt; guide for more information about how to use feaggle in your project.&lt;/p&gt;
+
+&lt;p&gt;And remember that if you have any feedback or suggestion,please fill us an issue so we can keep track of them 😍.&lt;/p&gt;
 </description>
     </item>
     
